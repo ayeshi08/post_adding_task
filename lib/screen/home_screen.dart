@@ -221,7 +221,7 @@ class _NewHomeState extends State<NewHome> {
                                   title: Text(
                                     "${item['text1']}",
                                     style: TextStyle(
-                                        fontSize: 20,
+                                        fontSize: 20.sp,
                                         fontWeight: FontWeight.w700,
                                         color: Colors.blueAccent),
                                   ),
@@ -232,7 +232,7 @@ class _NewHomeState extends State<NewHome> {
                                       Text(
                                         "${item['text2']}",
                                         style: TextStyle(
-                                            fontSize: 12,
+                                            fontSize: 12.sp,
                                             fontWeight: FontWeight.w400),
                                       ),
                                     ],
