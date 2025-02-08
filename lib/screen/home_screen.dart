@@ -28,8 +28,8 @@ class _NewHomeState extends State<NewHome> {
           insetPadding: EdgeInsets.zero,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           content: Container(
-            width: 400.w,
-            height: 900.h,
+            width: 360.w,
+            height: 812.h,
             child: Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 20.w,
