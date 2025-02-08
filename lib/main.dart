@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_task/providers/auth_provider.dart';
+import 'package:new_task/providers/dialouge_provider.dart';
 import 'package:new_task/providers/password_visibility_provider.dart';
 
 import 'package:new_task/wrapper.dart';
@@ -16,7 +17,7 @@ void main() async{
   runApp( MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthenticationService()), // First provider
-        ChangeNotifierProvider(create: (_) => PasswordVisibility()),    // Second provider
+        ChangeNotifierProvider(create: (_) => PasswordVisibility()), // Second provider
       ],
     child:   MyApp()));
 
