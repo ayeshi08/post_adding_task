@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,6 +15,7 @@ class NewHome extends StatefulWidget {
 }
 
 class _NewHomeState extends State<NewHome> {
+  @override
 
 
   @override
@@ -56,7 +58,7 @@ class _NewHomeState extends State<NewHome> {
                       20.verticalSpace,
                       // StreamBuilder to display data from Firebase Firestore
                       Expanded(
-                        child: StreamBuilder<List<Map<String, dynamic>>>(
+                        child: StreamBuilder<QuerySnapshot>(
                           stream: getDataFromFirestore(),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
@@ -69,37 +71,33 @@ class _NewHomeState extends State<NewHome> {
                             } else if (snapshot.hasError) {
                               return Text('Error: ${snapshot.error}');
                             } else if (!snapshot.hasData ||
-                                snapshot.data!.isEmpty) {
+                                snapshot.data!.docs.isEmpty) {
                               return Text("No data available.");
                             }
 
                             // Display the data from Firestore
-                            final data = snapshot.data!;
+                            final posts = snapshot.data!.docs;
 
                             return ListView.builder(
-                              itemCount: data.length,
+                              itemCount: posts.length,
                               itemBuilder: (context, index) {
-                                final item = data[index];
+                                final post = posts[index].data() as Map<String, dynamic>;
+                                final userName = post['userName']; // This should hold the username field
+                                final text1 = post['text1'];
+                                final text2 = post['text2'];
                                 return ListTile(
-                                  title: Text(
-                                    "${item['text1']}",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.w700,
-                                        color: Colors.blueAccent),
-                                  ),
-                                  subtitle: Column(
+                                  title: Column(
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        "${item['text2']}",
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w400),
-                                      ),
+                                      // Show the name of the user who posted
+                                      Text(userName ?? 'Unknown User',
+                                          style: TextStyle(fontWeight: FontWeight.bold)),
+                                  Text(text1),
+
                                     ],
                                   ),
+                                  subtitle:    Text(text2),
                                 );
                               },
                             );

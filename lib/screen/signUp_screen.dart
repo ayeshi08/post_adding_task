@@ -1,15 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:new_task/appStyle/appColor.dart';
+import 'package:new_task/providers/auth_provider.dart';
 import 'package:new_task/screen/login_screen.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/auth_provider.dart';
+import '../providers/textcontroller_provider.dart';
 import '../providers/password_visibility_provider.dart';
-import '../wrapper.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -19,19 +17,14 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  // homeController controller = Get.put(homeController());
-  final TextEditingController userName = TextEditingController();
-
-  final TextEditingController emailcontroller = TextEditingController();
-
-  TextEditingController passwordcontroller = TextEditingController();
-  // signUp()async{
-  //   await FirebaseAuth.instance.createUserWithEmailAndPassword(
-  //       email: email.text, password: password.text);
-  //   Get.offAll(Wrapper());
-  // }
   @override
   Widget build(BuildContext context) {
+    final namecontroller =
+        Provider.of<TextEditingControllerProvider>(context).namecontroller;
+    final TextEditingController emailcontroller = TextEditingController();
+
+    TextEditingController passwordcontroller = TextEditingController();
+
     return Scaffold(
       backgroundColor: AppColors.appMainColor,
       appBar: AppBar(
@@ -48,7 +41,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: Image(image: AssetImage('assets/images/user.png'))),
                 25.verticalSpace,
                 TextFormField(
-                  controller: userName,
+                  controller: namecontroller,
                   decoration: new InputDecoration(
                       prefixIcon: Icon(Icons.account_box),
                       enabledBorder: OutlineInputBorder(
@@ -109,49 +102,51 @@ class _SignupScreenState extends State<SignupScreen> {
                   },
                 ),
                 20.verticalSpace,
-    Consumer<PasswordVisibility>(
-    builder: (context, passwordVisibilityProvider, child) {
-      return
-
-                TextFormField(
-                  controller: passwordcontroller,
-                    obscureText: !passwordVisibilityProvider.isPasswordVisible,
-                  decoration: new InputDecoration(
-                      prefixIcon: Icon(Icons.lock_outline),
-                      enabledBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: Colors.black12, width: 2.w),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide:
-                            BorderSide(color: AppColors.HeadingTextColor),
-                      ),
-                      labelText: ' Password',
-                      labelStyle: TextStyle(
-                        color: Colors.black45,
-                        fontFamily: 'Poppins-Black',
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        //  color: head
-                      ),
-                    suffixIcon: IconButton(
-                  icon: Icon(
-                  passwordVisibilityProvider.isPasswordVisible
-                    ? Icons.visibility
-                    : Icons.visibility_off,
-                  ), onPressed: () {
-                    // Toggle password visibility
-      passwordVisibilityProvider.togglePasswordVisibility(); },
-      ),
-                  ) );
-    }
-    ),
+                Consumer<PasswordVisibility>(
+                    builder: (context, passwordVisibilityProvider, child) {
+                  return TextFormField(
+                      controller: passwordcontroller,
+                      obscureText:
+                          !passwordVisibilityProvider.isPasswordVisible,
+                      decoration: new InputDecoration(
+                        prefixIcon: Icon(Icons.lock_outline),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black12, width: 2.w),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: AppColors.HeadingTextColor),
+                        ),
+                        labelText: ' Password',
+                        labelStyle: TextStyle(
+                          color: Colors.black45,
+                          fontFamily: 'Poppins-Black',
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          //  color: head
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordVisibilityProvider.isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                          ),
+                          onPressed: () {
+                            // Toggle password visibility
+                            passwordVisibilityProvider
+                                .togglePasswordVisibility();
+                          },
+                        ),
+                      ));
+                }),
                 18.verticalSpace,
                 InkWell(
                   onTap: () async {
                     final String email = emailcontroller.text;
                     final String password = passwordcontroller.text;
-                    if (email.isEmpty || password.isEmpty) {
+                    final String username = namecontroller.text;
+                    if (email.isEmpty || password.isEmpty || username.isEmpty) {
                       // Show a SnackBar if either field is empty
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
