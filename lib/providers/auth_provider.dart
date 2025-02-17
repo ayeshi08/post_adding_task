@@ -127,6 +127,14 @@ class AuthenticationService extends ChangeNotifier {
           ),
           backgroundColor: Colors.black,
         ));
+      }else if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(
+            'The email address is not valid',
+            style: TextStyle(color: AppColors.appMainColor),
+          ),
+          backgroundColor: Colors.black,
+        ));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
